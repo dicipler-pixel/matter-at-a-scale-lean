@@ -67,7 +67,6 @@ theorem rejected_bohr (ħ m e s : ℝ) (hs : s ≠ 0) :
 theorem rejected_miss (a s : ℝ) (ha : a ≠ 0) (hs : s ≠ 0) :
     (s * a) / (s⁻¹ ^ 3 * a) = s ^ 4 := by
   field_simp
-  ring
 
 /-- **Theorem 2, gravity.** With `M_Pl ↦ M_Pl/s`, `G = ħc/M_Pl²` scales as `s²`. -/
 theorem gravitational_G (ħ c M s : ℝ) (hM : M ≠ 0) (hs : s ≠ 0) :
@@ -122,8 +121,16 @@ end Span
 /-- **Lemma 1, spectral order.** A positive dilation preserves the order of eigenvalues; a
 negative one reverses it. -/
 theorem dilation_order (c μ ν : ℝ) :
-    (0 < c → (c * μ < c * ν ↔ μ < ν)) ∧ (c < 0 → (c * μ < c * ν ↔ ν < μ)) :=
-  ⟨fun hc => mul_lt_mul_left hc, fun hc => mul_lt_mul_left_of_neg hc⟩
+    (0 < c → (c * μ < c * ν ↔ μ < ν)) ∧ (c < 0 → (c * μ < c * ν ↔ ν < μ)) := by
+  refine ⟨fun hc => ⟨fun h => ?_, fun h => ?_⟩, fun hc => ⟨fun h => ?_, fun h => ?_⟩⟩
+  · by_contra h'
+    push_neg at h'
+    nlinarith
+  · nlinarith
+  · by_contra h'
+    push_neg at h'
+    nlinarith
+  · nlinarith
 
 section Ratios
 
